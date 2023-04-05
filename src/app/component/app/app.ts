@@ -41,17 +41,17 @@ export default defineComponent({
 				if (Direction.UP === direction.value) {
 					const currentTranslateValue = beginPosition.value.y - endPosition.value.y;
 
-					if (500 <= currentTranslateValue) {
+					if (300 <= currentTranslateValue) {
 						console.log("MAX");
 						lastObjectPosition.value = LastPosition.TOP;
-						translateValue.value = 500;
+						translateValue.value = 300;
 						reset();
 					}
-					else if (500 > currentTranslateValue && 30 < currentTranslateValue) {
+					else if (300 > currentTranslateValue && 30 < currentTranslateValue) {
 						console.log("MAX UPPER");
 						lastObjectPosition.value = LastPosition.TOP;
 						reset();
-						for (let i = 0; i < 500 - currentTranslateValue; i++) {
+						for (let i = 0; i < 300 - currentTranslateValue; i++) {
 							setTimeout(() => {
 								translateValue.value += 1;
 							}, 2 * i);
@@ -96,7 +96,7 @@ export default defineComponent({
 
 					if (0 >= currentTranslateValue) {
 						lastObjectPosition.value = LastPosition.TOP;
-						translateValue.value = 500;
+						translateValue.value = 300;
 						reset();
 					}
 
@@ -112,17 +112,17 @@ export default defineComponent({
 				else {
 					const currentTranslateValue = endPosition.value.y - beginPosition.value.y;
 
-					if (500 <= currentTranslateValue) {
+					if (300 <= currentTranslateValue) {
 						console.log("MAX");
 						lastObjectPosition.value = LastPosition.BOTTOM;
 						translateValue.value = 0;
 						reset();
 					}
-					else if (500 > currentTranslateValue && 30 < currentTranslateValue) {
+					else if (300 > currentTranslateValue && 30 < currentTranslateValue) {
 						console.log("MAX UPPER");
 						lastObjectPosition.value = LastPosition.BOTTOM;
 						reset();
-						for (let i = 0; i < 500 - currentTranslateValue; i++) {
+						for (let i = 0; i < 300 - currentTranslateValue; i++) {
 							setTimeout(() => {
 								translateValue.value -= 1;
 							}, 2 * i);
@@ -179,20 +179,20 @@ export default defineComponent({
 					console.log('UP');
 					const currentTranslateValue = beginPosition.value.y - currentPosition.value.y;
 
-					if (500 >= currentTranslateValue) {
+					if (300 >= currentTranslateValue) {
 						translateValue.value = currentTranslateValue;
 
 						return;
 					}
 
-					translateValue.value = 500;
+					translateValue.value = 300;
 				}
 				// Направление вниз
 				else {
 					console.log('DOWN')
 					const currentTranslateValue = beginPosition.value.y - currentPosition.value.y;
 
-					if (0 <= currentTranslateValue && 500 >= currentTranslateValue) {
+					if (0 <= currentTranslateValue && 300 >= currentTranslateValue) {
 						translateValue.value = currentTranslateValue;
 
 						return;
@@ -208,21 +208,21 @@ export default defineComponent({
 					console.log('UP');
 					const currentTranslateValue =  currentPosition.value.y - beginPosition.value.y;
 
-					if (0 <= currentTranslateValue && 500 >= currentTranslateValue) {
-						translateValue.value = 500 - currentTranslateValue;
+					if (0 <= currentTranslateValue && 300 >= currentTranslateValue) {
+						translateValue.value = 300 - currentTranslateValue;
 
 						return;
 					}
 
-					translateValue.value = 500;
+					translateValue.value = 300;
 				}
 				// Направление вниз
 				else {
 					console.log('DOWN')
 					const currentTranslateValue = currentPosition.value.y - beginPosition.value.y;
 
-					if (500 >= currentTranslateValue) {
-						translateValue.value = 500 - currentTranslateValue;
+					if (300 >= currentTranslateValue) {
+						translateValue.value = 300 - currentTranslateValue;
 
 						return;
 					}
