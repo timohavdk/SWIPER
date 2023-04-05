@@ -1,5 +1,4 @@
 body {
-	height:          100vh;
 	width:           100%;
 	display:         flex;
 	justify-content: center;
@@ -11,6 +10,7 @@ body {
 	width:            100%;
 
 	&__road {
+		margin-top:       25px;
 		height:           400px;
 		width:            180px;
 		background-color: #315d75;
