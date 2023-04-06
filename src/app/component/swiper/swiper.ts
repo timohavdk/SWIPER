@@ -84,7 +84,7 @@ export default defineComponent({
 								if (i === (maxSize.value - 1) - currentTranslateValue && maxSize.value !== translateValue.value) {
 									translateValue.value = maxSize.value;
 								}
-							}, 2 * i);
+							}, i);
 						}
 					}
 					else {
@@ -97,7 +97,7 @@ export default defineComponent({
 								if (i === currentTranslateValue - 1 && 0 !== translateValue.value) {
 									translateValue.value = 0;
 								}
-							}, 2 * i);
+							}, i);
 						}
 					}
 				}
@@ -122,7 +122,7 @@ export default defineComponent({
 								if (i === currentTranslateValue - 1 && 0 !== translateValue.value) {
 									translateValue.value = 0;
 								}
-							}, 2 * i);
+							}, i);
 						}
 					}
 				}
@@ -172,7 +172,7 @@ export default defineComponent({
 								if (i === (maxSize.value - currentTranslateValue) - 1 && 0 !== translateValue.value) {
 									translateValue.value = 0;
 								}
-							}, 2 * i);
+							}, i);
 						}
 					}
 					else {
@@ -185,7 +185,7 @@ export default defineComponent({
 								if (i === currentTranslateValue - 1 && maxSize.value !== translateValue.value) {
 									translateValue.value = maxSize.value;
 								}
-							}, 2 * i);
+							}, i);
 						}
 					}
 				}
@@ -286,7 +286,7 @@ export default defineComponent({
 				return;
 			}
 
-			console.log('event', event)
+			console.log('event start', event)
 			const coordinates: Coordinates = {
 				x: Math.floor(event.changedTouches[0].clientX),
 				y: Math.floor(event.changedTouches[0].clientY),
@@ -296,10 +296,14 @@ export default defineComponent({
 			beginPosition.value = coordinates;
 		}
 
-		const scrollHandler = () => {
+		const scrollHandler = (event) => {
 			console.log('scroll');
 			console.log('scroll top', scrollTop.value)
 			scrollTop.value = swiperContainer.value.scrollTop;
+			if (0 !== scrollTop.value) {
+				event.preventDefault();
+				return;
+			}
 		}
 
 		return {

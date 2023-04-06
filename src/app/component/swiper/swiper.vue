@@ -11,7 +11,7 @@
 			class="swiper__road">
 			<div
 				ref="modal"
-				:style="{transform: `translateY(${maxSize + 25 - translateValue}px)`}"
+				:style="{transform: `translateY(${25 <= maxSize + 25 - translateValue ? maxSize + 25 - translateValue : 25}px)`}"
 				class="swiper__modal"
 			>
 				<div
