@@ -46,6 +46,7 @@ export default defineComponent({
 		})
 
 		const touchEndHandler = (event) => {
+			event.preventDefault();
 			if (0 !== scrollTop.value) {
 				return;
 			}
@@ -190,6 +191,7 @@ export default defineComponent({
 		}
 
 		const touchMoveHandler = (event) => {
+			event.preventDefault();
 			if (0 !== scrollTop.value) {
 				return;
 			}
@@ -276,6 +278,7 @@ export default defineComponent({
 		}
 
 		const touchStartHandler = (event) => {
+			event.preventDefault();
 			if (0 !== scrollTop.value) {
 				return;
 			}
