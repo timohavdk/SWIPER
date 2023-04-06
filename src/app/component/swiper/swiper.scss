@@ -29,6 +29,7 @@
 
 	&__container {
 		overflow: overlay;
+		overscroll-behavior: none;
 		padding-bottom: 25px;
 	}
 
