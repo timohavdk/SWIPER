@@ -1,0 +1,35 @@
+.delivery-from-stock-modal {
+	&__overlay {
+		z-index:          1600;
+		position:         fixed;
+		top:              0;
+		left:             0;
+		width:            100%;
+		height:           100%;
+		opacity:          0;
+		background-color: rgba(0, 0, 0, .5);
+		transition:       .3s;
+		display:          flex;
+		justify-content:  center;
+		align-items:      center;
+
+		&_show {
+			opacity: 1;
+		}
+	}
+
+	&__container {
+		opacity:    0;
+		transition: .3s;
+		position:   fixed;
+		bottom:     0;
+		right:      0;
+		width:      100%;
+		transform:  translateY(100%);
+
+		&_show {
+			opacity:   1;
+			transform: translateY(0);
+		}
+	}
+}

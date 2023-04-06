@@ -2,15 +2,17 @@
 <style src="./app.scss"></style>
 
 <template>
-	<div class="app">
-		<div
-				@touchstart="touchStartHandler"
-				@touchend="touchEndHandler"
-				@touchmove="touchMoveHandler"
-				class="app__road">
-			<div :style="{transform: `translateY(-${translateValue}px)`}" class="app__ball">
-
-			</div>
-		</div>
-	</div>
+	<Swiper>
+		<template #header>
+			<p>Header</p>
+		</template>
+		<template #content>
+			<p style="height: 700px">Content</p>
+		</template>
+		<template #footer>
+			<p>Footer</p>
+		</template>
+	</Swiper>
 </template>
+
+
