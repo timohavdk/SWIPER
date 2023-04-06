@@ -9,7 +9,11 @@
 			@touchmove="touchMoveHandler"
 			:style="{height: `${maxSize + 25}px`}"
 			class="swiper__road">
-			<div ref="modal" :style="{transform: `translateY(${maxSize + 25 - translateValue}px)`}" class="swiper__modal">
+			<div
+				ref="modal"
+				:style="{transform: `translateY(${maxSize + 25 - translateValue}px)`}"
+				class="swiper__modal"
+			>
 				<div
 					class="swiper__container"
 					ref="swiperContainer"

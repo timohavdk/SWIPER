@@ -28,6 +28,8 @@ export default defineComponent({
 		}
 
 		onMounted(() => {
+			document.body.style.overflow = 'hidden';
+
 			translateValue.value = 0;
 
 			const contentHeight = modal.value.offsetHeight;
@@ -46,7 +48,7 @@ export default defineComponent({
 		})
 
 		const touchEndHandler = (event) => {
-			event.preventDefault();
+			//event.preventDefault();
 			if (0 !== scrollTop.value) {
 				return;
 			}
@@ -191,7 +193,7 @@ export default defineComponent({
 		}
 
 		const touchMoveHandler = (event) => {
-			event.preventDefault();
+			//event.preventDefault();
 			if (0 !== scrollTop.value) {
 				return;
 			}
@@ -278,7 +280,8 @@ export default defineComponent({
 		}
 
 		const touchStartHandler = (event) => {
-			event.preventDefault();
+			//event.preventDefault();
+
 			if (0 !== scrollTop.value) {
 				return;
 			}
@@ -294,6 +297,8 @@ export default defineComponent({
 		}
 
 		const scrollHandler = () => {
+			console.log('scroll');
+			console.log('scroll top', scrollTop.value)
 			scrollTop.value = swiperContainer.value.scrollTop;
 		}
 
@@ -306,7 +311,7 @@ export default defineComponent({
 			maxSize,
 			contentSize,
 			swiperContainer,
-			scrollHandler
+			scrollHandler,
 		}
 	}
 });
