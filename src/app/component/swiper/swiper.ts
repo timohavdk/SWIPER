@@ -1,5 +1,4 @@
 import {defineComponent, ref, Ref, computed, onMounted} from "vue";
-import {createLogger} from 'vuex';
 import Coordinates from './coordinates';
 import {Direction} from './direction';
 import {LastPosition} from './last-position';
@@ -300,7 +299,7 @@ export default defineComponent({
 			console.log('scroll');
 			console.log('scroll top', scrollTop.value)
 			scrollTop.value = swiperContainer.value.scrollTop;
-			if (0 !== scrollTop.value) {
+			if (0 == scrollTop.value) {
 				event.preventDefault();
 				return;
 			}
