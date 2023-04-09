@@ -19,13 +19,6 @@ export default defineComponent({
 		const contentSize        = ref(0);
 		const scrollTop          = ref(0);
 
-		const reset = (): void => {
-			beginPosition.value   = null;
-			lastPosition.value    = null;
-			currentPosition.value = null;
-			endPosition.value     = null;
-		}
-
 		onMounted(() => {
 			document.body.style.overflow = 'hidden';
 
@@ -44,10 +37,45 @@ export default defineComponent({
 			}
 
 			contentSize.value = contentHeight;
-		})
+		});
+
+		const reset = (): void => {
+			beginPosition.value   = null;
+			lastPosition.value    = null;
+			currentPosition.value = null;
+			endPosition.value     = null;
+		}
+
+		const moveTop = (): void => {
+			lastObjectPosition.value = LastPosition.TOP;
+			translateValue.value     = maxSize.value;
+			reset();
+		}
+
+		const moveDown = (): void => {
+			lastObjectPosition.value = LastPosition.BOTTOM;
+			translateValue.value     = 0;
+			reset();
+		}
+
+		const moveSlide = (cycleTime: number, finishTranslate: number, decrement: boolean, finishPosition: string): void => {
+			for (let i = 0; i < cycleTime; i++) {
+				setTimeout(() => {
+					const changeValue = (decrement ? -1 : 1);
+					translateValue.value += changeValue;
+					if (i === cycleTime - 1) {
+						lastObjectPosition.value = finishPosition;
+
+						if (finishTranslate !== translateValue.value) {
+							translateValue.value = maxSize.value;
+						}
+						console.log('position', lastObjectPosition.value)
+					}
+				}, i * 0.75);
+			}
+		}
 
 		const touchEndHandler = (event) => {
-			//event.preventDefault();
 			if (0 !== scrollTop.value) {
 				return;
 			}
@@ -69,35 +97,19 @@ export default defineComponent({
 					const currentTranslateValue = beginPosition.value.y - endPosition.value.y;
 
 					if (maxSize.value <= currentTranslateValue) {
-						lastObjectPosition.value = LastPosition.TOP;
-						translateValue.value     = maxSize.value;
-						reset();
+						console.log('1111- up')
+						moveTop();
 					}
 					else if (maxSize.value > currentTranslateValue && 20 < currentTranslateValue) {
-						lastObjectPosition.value = LastPosition.TOP;
+						console.log('2222- up')
 						reset();
-						for (let i = 0; i < maxSize.value - currentTranslateValue; i++) {
-							setTimeout(() => {
-								translateValue.value += 1;
-
-								if (i === (maxSize.value - 1) - currentTranslateValue && maxSize.value !== translateValue.value) {
-									translateValue.value = maxSize.value;
-								}
-							}, i);
-						}
+						moveSlide(maxSize.value - currentTranslateValue, maxSize.value, false, LastPosition.TOP);
 					}
 					else {
-						lastObjectPosition.value = LastPosition.BOTTOM;
+						console.log('3333- up')
+						//lastObjectPosition.value = LastPosition.BOTTOM;
 						reset();
-						for (let i = 0; i < currentTranslateValue; i++) {
-							setTimeout(() => {
-								translateValue.value -= 1;
-
-								if (i === currentTranslateValue - 1 && 0 !== translateValue.value) {
-									translateValue.value = 0;
-								}
-							}, i);
-						}
+						moveSlide(currentTranslateValue, 0, true, LastPosition.BOTTOM);
 					}
 				}
 				// Движение вниз
@@ -105,24 +117,15 @@ export default defineComponent({
 					const currentTranslateValue = beginPosition.value.y - endPosition.value.y;
 
 					if (0 >= currentTranslateValue) {
-						lastObjectPosition.value = LastPosition.BOTTOM;
-						translateValue.value     = 0;
-						reset();
+						console.log('4444- up')
+						moveDown();
 					}
 
 					else {
-						lastObjectPosition.value = LastPosition.BOTTOM;
+						console.log('5555- up')
+						//lastObjectPosition.value = LastPosition.BOTTOM;
 						reset();
-
-						for (let i = 0; i < currentTranslateValue; i++) {
-							setTimeout(() => {
-								translateValue.value -= 1;
-
-								if (i === currentTranslateValue - 1 && 0 !== translateValue.value) {
-									translateValue.value = 0;
-								}
-							}, i);
-						}
+						moveSlide(currentTranslateValue, 0, true, LastPosition.BOTTOM)
 					}
 				}
 			}
@@ -134,22 +137,12 @@ export default defineComponent({
 					const currentTranslateValue = endPosition.value.y - beginPosition.value.y;
 
 					if (0 >= currentTranslateValue) {
-						lastObjectPosition.value = LastPosition.TOP;
-						translateValue.value     = maxSize.value;
-						reset();
+						console.log('1111');
+						moveTop();
 					}
 					else {
-						for (let i = 0; i < currentTranslateValue; i++) {
-							lastObjectPosition.value = LastPosition.TOP;
-							reset();
-							setTimeout(() => {
-								translateValue.value += 1;
-
-								if (i === currentTranslateValue - 1 && maxSize.value !== translateValue.value) {
-									translateValue.value = maxSize.value;
-								}
-							}, i);
-						}
+						console.log('2222');
+						moveSlide(currentTranslateValue, maxSize.value, false, LastPosition.TOP)
 					}
 				}
 				// Движение вниз
@@ -157,35 +150,21 @@ export default defineComponent({
 					const currentTranslateValue = endPosition.value.y - beginPosition.value.y;
 
 					if (maxSize.value <= currentTranslateValue) {
-						lastObjectPosition.value = LastPosition.BOTTOM;
-						translateValue.value     = 0;
-						reset();
+						console.log('3333');
+						moveDown();
 					}
 					else if (maxSize.value > currentTranslateValue && 20 < currentTranslateValue) {
-						lastObjectPosition.value = LastPosition.BOTTOM;
+						//lastObjectPosition.value = LastPosition.BOTTOM;
 						reset();
-						for (let i = 0; i < maxSize.value - currentTranslateValue; i++) {
-							setTimeout(() => {
-								translateValue.value -= 1;
-
-								if (i === (maxSize.value - currentTranslateValue) - 1 && 0 !== translateValue.value) {
-									translateValue.value = 0;
-								}
-							}, i);
-						}
+						console.log('4444');
+						moveSlide(maxSize.value - currentTranslateValue, 0, true, LastPosition.BOTTOM);
 					}
 					else {
-						lastObjectPosition.value = LastPosition.TOP;
-						reset();
-						for (let i = 0; i < currentTranslateValue; i++) {
-							setTimeout(() => {
-								translateValue.value += 1;
 
-								if (i === currentTranslateValue - 1 && maxSize.value !== translateValue.value) {
-									translateValue.value = maxSize.value;
-								}
-							}, i);
-						}
+						//lastObjectPosition.value = LastPosition.TOP;
+						reset();
+						console.log('5555')
+						moveSlide(currentTranslateValue, maxSize.value, false, LastPosition.TOP);
 					}
 				}
 			}
@@ -279,13 +258,10 @@ export default defineComponent({
 		}
 
 		const touchStartHandler = (event) => {
-			//event.preventDefault();
-
 			if (0 !== scrollTop.value) {
 				return;
 			}
 
-			console.log('event start', event)
 			const coordinates: Coordinates = {
 				x: Math.floor(event.changedTouches[0].clientX),
 				y: Math.floor(event.changedTouches[0].clientY),
@@ -296,8 +272,6 @@ export default defineComponent({
 		}
 
 		const scrollHandler = (event) => {
-			console.log('scroll');
-			console.log('scroll top', scrollTop.value)
 			scrollTop.value = swiperContainer.value.scrollTop;
 			if (0 == scrollTop.value) {
 				event.preventDefault();
@@ -306,14 +280,14 @@ export default defineComponent({
 		}
 
 		return {
-			touchStartHandler,
-			touchEndHandler,
-			touchMoveHandler,
 			translateValue,
 			modal,
 			maxSize,
 			contentSize,
 			swiperContainer,
+			touchStartHandler,
+			touchEndHandler,
+			touchMoveHandler,
 			scrollHandler,
 		}
 	}
