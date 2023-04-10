@@ -18,13 +18,13 @@
 			@touchstart="touchStartHandler"
 			@touchend="touchEndHandler"
 			@touchmove="touchMoveHandler"
-			:style="{height: `${maxSize - hookHeight}px`}"
+			:style="{height: `${maxSize + hookHeight}px`}"
 			class="swiper__road">
 			<div
 				ref="modal"
 				:style="{
 					transform:  `translateY(${translate}px)`,
-					paddingTop: `${hookHeight}px`
+					paddingTop: `${hookHeight}px`,
 				}"
 				:class="[
 					'swiper__modal',

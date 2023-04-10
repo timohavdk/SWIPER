@@ -42,7 +42,7 @@ export default defineComponent({
 
 			if (contentHeight >= clientHeight - (50 + props.hookHeight)) {
 				maxSize.value                      = clientHeight - (50 + props.hookHeight);
-				modal.value.style.height           = `${maxSize.value}px`;
+				modal.value.style.height           = `${maxSize.value + 50}px`;
 				swiperContainer.value.style.height = `${maxSize.value}px`
 			}
 			else {
