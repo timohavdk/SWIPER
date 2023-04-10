@@ -6,10 +6,10 @@ import {LastPosition} from './last-position';
 export default defineComponent({
 	name: "Swiper",
 	props: {
-		hookHeight:  {type: Number, default: 25},
-		bottomClose: {type: Boolean, default: true},
+		hookHeight:      {type: Number, default: 25},
+		bottomClose:     {type: Boolean, default: true},
 		backdropEnabled: {type: Boolean, default: true},
-		isHookShown: {type: Boolean, default: false},
+		isHookShown:     {type: Boolean, default: false},
 	},
 	emits: ['close'],
 	setup(props: any, {emit}) {
@@ -27,6 +27,10 @@ export default defineComponent({
 		const modal              = ref(null);
 		const swiperContainer    = ref(null);
 
+		const SWIPER_MODAL_CLASS: string = 'swiper__modal';
+		const FREE_ZONE: number          = 50;
+		const MIN_SCROLL: number         = 20;
+
 
 		onMounted(() => {
 			if (props.isShown == false) {
@@ -40,9 +44,9 @@ export default defineComponent({
 			const contentHeight = modal.value.offsetHeight;
 			const clientHeight = document.documentElement.clientHeight;
 
-			if (contentHeight >= clientHeight - (50 + props.hookHeight)) {
-				maxSize.value                      = clientHeight - (50 + props.hookHeight);
-				modal.value.style.height           = `${maxSize.value + 50}px`;
+			if (contentHeight >= clientHeight - (FREE_ZONE + props.hookHeight)) {
+				maxSize.value                      = clientHeight - (FREE_ZONE + props.hookHeight);
+				modal.value.style.height           = `${maxSize.value + FREE_ZONE}px`;
 				swiperContainer.value.style.height = `${maxSize.value}px`
 			}
 			else {
@@ -51,7 +55,7 @@ export default defineComponent({
 
 			contentSize.value = contentHeight;
 
-			moveSlide(maxSize.value, maxSize.value, false, LastPosition.TOP)
+			moveSlide(maxSize.value, maxSize.value, false, LastPosition.TOP);
 			setTimeout(() => {
 				isOpacityVisible.value = true;
 			}, 100);
@@ -78,6 +82,7 @@ export default defineComponent({
 
 		const closeBottomSheet = () => {
 			isOpacityVisible.value = false;
+
 			setTimeout(() => {
 				document.body.style.overflow = 'auto';
 				emit('close');
@@ -108,7 +113,7 @@ export default defineComponent({
 			}
 
 			return props.hookHeight;
-		})
+		});
 
 		const overlayCloseHandler = () => {
 			moveSlide(maxSize.value, 0, true, LastPosition.BOTTOM);
@@ -120,7 +125,7 @@ export default defineComponent({
 				return;
 			}
 
-			if (0 !== scrollTop.value && 'swiper__modal' !== event.srcElement.className) {
+			if (0 !== scrollTop.value && SWIPER_MODAL_CLASS !== event.srcElement.classList[0]) {
 				return;
 			}
 
@@ -143,7 +148,7 @@ export default defineComponent({
 					if (maxSize.value <= currentTranslateValue) {
 						moveTop();
 					}
-					else if (maxSize.value > currentTranslateValue && 20 < currentTranslateValue) {
+					else if (maxSize.value > currentTranslateValue && MIN_SCROLL < currentTranslateValue) {
 						reset();
 						moveSlide(maxSize.value - currentTranslateValue, maxSize.value, false, LastPosition.TOP);
 					}
@@ -159,7 +164,6 @@ export default defineComponent({
 					if (0 >= currentTranslateValue) {
 						moveDown();
 					}
-
 					else {
 						reset();
 						moveSlide(currentTranslateValue, 0, true, LastPosition.BOTTOM)
@@ -187,7 +191,7 @@ export default defineComponent({
 					if (maxSize.value <= currentTranslateValue) {
 						moveDown();
 					}
-					else if (maxSize.value > currentTranslateValue && 20 < currentTranslateValue) {
+					else if (maxSize.value > currentTranslateValue && MIN_SCROLL < currentTranslateValue) {
 						reset();
 						moveSlide(maxSize.value - currentTranslateValue, 0, true, LastPosition.BOTTOM);
 
@@ -205,7 +209,7 @@ export default defineComponent({
 				return;
 			}
 
-			if (0 !== scrollTop.value && 'swiper__modal' !== event.srcElement.className) {
+			if (0 !== scrollTop.value && SWIPER_MODAL_CLASS !== event.srcElement.classList[0]) {
 				return;
 			}
 
@@ -295,7 +299,7 @@ export default defineComponent({
 				return;
 			}
 
-			if (0 !== scrollTop.value && 'swiper__modal' !== event.srcElement.className) {
+			if (0 !== scrollTop.value && SWIPER_MODAL_CLASS !== event.srcElement.classList[0]) {
 				return;
 			}
 
