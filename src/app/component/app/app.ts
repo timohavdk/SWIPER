@@ -1,31 +1,43 @@
 import {defineComponent, ref} from 'vue';
-import Swiper from '../swiper/swiper.vue';
+import BaseUiBottomSheet from '../base-ui-bottom-sheet/base-ui-bottom-sheet.vue';
 
 export default defineComponent({
 	name: 'App',
 	components: {
-		Swiper,
+		BaseUiBottomSheet,
 	},
 	setup() {
 		const isVisible = ref<boolean>(false);
+		const close = ref<boolean>(false);
 
 		const breaks = {
 			top: {
 				enabled: true,
-				height: 300,
-				bounce: true,
+				height:  300,
+				bounce:  true,
 			}
 		}
 
 		const clickHandlerBottomSheet = () => {
-			console.log(1);
-			isVisible.value = !isVisible.value;
+			isVisible.value = true;
+		}
+
+		const closeHandler = () => {
+			isVisible.value = false;
+			close.value     = false;
+		}
+
+		const closeBottomSheet = () => {
+			close.value = true;
 		}
 
 		return {
 			clickHandlerBottomSheet,
+			closeBottomSheet,
+			closeHandler,
 			isVisible,
-			breaks
+			breaks,
+			close,
 		}
 	}
 })

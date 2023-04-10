@@ -7,24 +7,26 @@
 			class="app__button"
 			@click="clickHandlerBottomSheet"
 		>Show bottom-sheet</button>
-		<Swiper
-			@close="clickHandlerBottomSheet"
+		<BaseUiBottomSheet
+			@close="closeHandler"
 			:hookHeight="30"
 			:bottomClose="true"
 			:backdropEnabled="true"
 			:isHookShown="true"
+			:isClose="close"
 			v-if="isVisible"
 		>
 			<template #header>
 				<p>Header</p>
 			</template>
 			<template #content>
-				<p style="height: 700px">Content</p>
+				<p style="height: 400px">Content</p>
+				<button @click="closeBottomSheet">close</button>
 			</template>
 			<template #footer>
 				<p>Footer</p>
 			</template>
-		</Swiper>
+		</BaseUiBottomSheet>
 	</div>
 </template>
 
