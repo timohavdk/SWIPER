@@ -65,15 +65,24 @@ export default defineComponent({
 					translateValue.value += changeValue;
 					if (i === cycleTime - 1) {
 						lastObjectPosition.value = finishPosition;
-
-						if (finishTranslate !== translateValue.value) {
-							translateValue.value = maxSize.value;
-						}
+						translateValue.value = finishTranslate;
 						console.log('position', lastObjectPosition.value)
 					}
 				}, i * 0.75);
 			}
 		}
+
+		const translate = computed<number>(() => {
+			if (25 <= maxSize.value - translateValue.value + 25) {
+				return maxSize.value - translateValue.value + 25;
+			}
+
+			if (maxSize.value < maxSize.value - translateValue.value + 25) {
+				console.log(23232);
+				return maxSize.value;
+			}
+			return 25;
+		})
 
 		const touchEndHandler = (event) => {
 			if (0 !== scrollTop.value) {
@@ -156,11 +165,10 @@ export default defineComponent({
 					else if (maxSize.value > currentTranslateValue && 20 < currentTranslateValue) {
 						//lastObjectPosition.value = LastPosition.BOTTOM;
 						reset();
-						console.log('4444');
 						moveSlide(maxSize.value - currentTranslateValue, 0, true, LastPosition.BOTTOM);
+
 					}
 					else {
-
 						//lastObjectPosition.value = LastPosition.TOP;
 						reset();
 						console.log('5555')
@@ -285,6 +293,7 @@ export default defineComponent({
 			maxSize,
 			contentSize,
 			swiperContainer,
+			translate,
 			touchStartHandler,
 			touchEndHandler,
 			touchMoveHandler,
