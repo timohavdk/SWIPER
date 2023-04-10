@@ -1,4 +1,4 @@
-import {defineComponent, ref, Ref, computed, onMounted} from "vue";
+import {defineComponent, ref, computed, onMounted} from "vue";
 import Coordinates from './coordinates';
 import {Direction} from './direction';
 import {LastPosition} from './last-position';
