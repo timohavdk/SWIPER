@@ -18,6 +18,7 @@ export default defineComponent({
 		}
 
 		const clickHandlerBottomSheet = () => {
+			console.log(1);
 			isVisible.value = !isVisible.value;
 		}
 

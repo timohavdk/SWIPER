@@ -2,8 +2,12 @@
 <style src="./swiper.scss"></style>
 
 <template>
-	<div class="swiper">
+	<div
+		class="swiper"
+		:style="{height: `${maxSize}px`}"
+	>
 		<div
+			v-if="backdropEnabled"
 			:class="[
 				'swiper__overlay',
 				{'swiper__overlay_visible': isOpacityVisible}
@@ -19,10 +23,13 @@
 			<div
 				ref="modal"
 				:style="{
-					transform:     `translateY(${translate}px)`,
+					transform:  `translateY(${translate}px)`,
 					paddingTop: `${hookHeight}px`
 				}"
-				class="swiper__modal"
+				:class="[
+					'swiper__modal',
+					{'swiper__modal_hook': isHookShown}
+				]"
 			>
 				<div
 					:class="[

@@ -1,22 +1,23 @@
 .swiper {
-	box-sizing:       border-box;
-	position:         fixed;
-	display:          flex;
-	flex-direction:   column;
-	justify-content:  flex-end;
-	align-items:      center;
-	bottom:           0;
-	width:            100%;
-	height:           100vh;
-	overflow:         hidden;
+	box-sizing:      border-box;
+	position:        fixed;
+	display:         flex;
+	flex-direction:  column;
+	justify-content: flex-end;
+	align-items:     center;
+	bottom:          0;
+	width:           100%;
+	height:          100vh;
+	overflow:        hidden;
 
 	&__overlay {
-		position: fixed;
-		width: 100%;
-		height: 100vh;
+		z-index: 10;
+		position:         fixed;
+		width:            100%;
+		height:           100vh;
 		background-color: black;
-		opacity: 0;
-		transition: .3s;
+		opacity:          0;
+		transition:       .3s;
 
 		&_visible {
 			opacity: 0.5;
@@ -24,8 +25,9 @@
 	}
 
 	&__road {
-		z-index: 10;
+		z-index:          11;
 		width:            100%;
+		max-width:        550px;
 		background-color: transparent;
 		display:          flex;
 		flex-direction:   column;
@@ -34,14 +36,36 @@
 	}
 
 	&__modal {
-		padding-top:      25px;
+		box-sizing:      border-box;
+		background-color: #fff;
+		box-shadow:       0 4px 16px rgba(0, 0, 0, .12);
+		border-radius:    20px;
 		width:            100%;
-		background-color: #c1f2ca;
+		max-width:        550px;
+		position:         relative;
+
+		&_hook {
+			&::before {
+				content:          '';
+				position:         absolute;
+				left:             0;
+				right:            0;
+				top:              13px;
+				margin:           auto;
+				width:            70px;
+				height:           10px;
+				border-radius:    5px;
+				background-color: #8c8c8c;
+				box-shadow:       0px 2px 2px rgba(0, 0, 0, 0.25);
+			}
+		}
+
+
 	}
 
 	&__container {
-		overflow:                   scroll;
-		overscroll-behavior:        none;
+		overflow:            scroll;
+		overscroll-behavior: none;
 
 		&_no-scroll {
 			overflow: hidden;

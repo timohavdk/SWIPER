@@ -10,6 +10,9 @@
 		<Swiper
 			@close="clickHandlerBottomSheet"
 			:hookHeight="30"
+			:bottomClose="true"
+			:backdropEnabled="true"
+			:isHookShown="true"
 			v-if="isVisible"
 		>
 			<template #header>

@@ -6,23 +6,27 @@ import {LastPosition} from './last-position';
 export default defineComponent({
 	name: "Swiper",
 	props: {
-		hookHeight: {type: Number, default: 25},
+		hookHeight:  {type: Number, default: 25},
+		bottomClose: {type: Boolean, default: true},
+		backdropEnabled: {type: Boolean, default: true},
+		isHookShown: {type: Boolean, default: false},
 	},
 	emits: ['close'],
 	setup(props: any, {emit}) {
-		const direction          = ref<string>(Direction.UP);
 		const beginPosition      = ref<Coordinates>(null);
 		const lastPosition       = ref<Coordinates>(null);
 		const currentPosition    = ref<Coordinates>(null);
 		const endPosition        = ref<Coordinates>(null);
+		const direction          = ref<string>(Direction.UP);
 		const lastObjectPosition = ref<string>(LastPosition.BOTTOM);
 		const translateValue     = ref<number>(0);
+		const maxSize            = ref<number>(0);
+		const contentSize        = ref<number>(0);
+		const scrollTop          = ref<number>(0);
+		const isOpacityVisible   = ref<boolean>(false);
 		const modal              = ref(null);
 		const swiperContainer    = ref(null);
-		const maxSize            = ref(0);
-		const contentSize        = ref(0);
-		const scrollTop          = ref(0);
-		const isOpacityVisible   = ref<boolean>(false);
+
 
 		onMounted(() => {
 			if (props.isShown == false) {
@@ -37,8 +41,8 @@ export default defineComponent({
 			const clientHeight = document.documentElement.clientHeight;
 
 			if (contentHeight >= clientHeight - (50 + props.hookHeight)) {
-				maxSize.value = clientHeight - (50 + props.hookHeight);
-				modal.value.style.height = `${maxSize.value}px`;
+				maxSize.value                      = clientHeight - (50 + props.hookHeight);
+				modal.value.style.height           = `${maxSize.value}px`;
 				swiperContainer.value.style.height = `${maxSize.value}px`
 			}
 			else {
@@ -48,10 +52,9 @@ export default defineComponent({
 			contentSize.value = contentHeight;
 
 			moveSlide(maxSize.value, maxSize.value, false, LastPosition.TOP)
-
 			setTimeout(() => {
 				isOpacityVisible.value = true;
-			}, 100)
+			}, 100);
 		});
 
 		const reset = (): void => {
@@ -76,6 +79,7 @@ export default defineComponent({
 		const closeBottomSheet = () => {
 			isOpacityVisible.value = false;
 			setTimeout(() => {
+				document.body.style.overflow = 'auto';
 				emit('close');
 			}, 300)
 		}
@@ -85,12 +89,13 @@ export default defineComponent({
 				setTimeout(() => {
 					const changeValue = (decrement ? -1 : 1);
 					translateValue.value += changeValue;
+
 					if (i === cycleTime - 1) {
 						lastObjectPosition.value = finishPosition;
-						translateValue.value = finishTranslate;
-						console.log('position', lastObjectPosition.value)
+						translateValue.value     = finishTranslate;
+
 						if (LastPosition.BOTTOM === finishPosition) {
-							closeBottomSheet()
+							closeBottomSheet();
 						}
 					}
 				}, i * 0.75);
@@ -111,6 +116,10 @@ export default defineComponent({
 		}
 
 		const touchEndHandler = (event) => {
+			if (!props.bottomClose) {
+				return;
+			}
+
 			if (0 !== scrollTop.value && 'swiper__modal' !== event.srcElement.className) {
 				return;
 			}
@@ -132,17 +141,13 @@ export default defineComponent({
 					const currentTranslateValue = beginPosition.value.y - endPosition.value.y;
 
 					if (maxSize.value <= currentTranslateValue) {
-						console.log('1111- up')
 						moveTop();
 					}
 					else if (maxSize.value > currentTranslateValue && 20 < currentTranslateValue) {
-						console.log('2222- up')
 						reset();
 						moveSlide(maxSize.value - currentTranslateValue, maxSize.value, false, LastPosition.TOP);
 					}
 					else {
-						console.log('3333- up')
-						//lastObjectPosition.value = LastPosition.BOTTOM;
 						reset();
 						moveSlide(currentTranslateValue, 0, true, LastPosition.BOTTOM);
 					}
@@ -152,13 +157,10 @@ export default defineComponent({
 					const currentTranslateValue = beginPosition.value.y - endPosition.value.y;
 
 					if (0 >= currentTranslateValue) {
-						console.log('4444- up')
 						moveDown();
 					}
 
 					else {
-						console.log('5555- up')
-						//lastObjectPosition.value = LastPosition.BOTTOM;
 						reset();
 						moveSlide(currentTranslateValue, 0, true, LastPosition.BOTTOM)
 					}
@@ -172,11 +174,9 @@ export default defineComponent({
 					const currentTranslateValue = endPosition.value.y - beginPosition.value.y;
 
 					if (0 >= currentTranslateValue) {
-						console.log('1111');
 						moveTop();
 					}
 					else {
-						console.log('2222');
 						moveSlide(currentTranslateValue, maxSize.value, false, LastPosition.TOP)
 					}
 				}
@@ -185,19 +185,15 @@ export default defineComponent({
 					const currentTranslateValue = endPosition.value.y - beginPosition.value.y;
 
 					if (maxSize.value <= currentTranslateValue) {
-						console.log('3333');
 						moveDown();
 					}
 					else if (maxSize.value > currentTranslateValue && 20 < currentTranslateValue) {
-						//lastObjectPosition.value = LastPosition.BOTTOM;
 						reset();
 						moveSlide(maxSize.value - currentTranslateValue, 0, true, LastPosition.BOTTOM);
 
 					}
 					else {
-						//lastObjectPosition.value = LastPosition.TOP;
 						reset();
-						console.log('5555')
 						moveSlide(currentTranslateValue, maxSize.value, false, LastPosition.TOP);
 					}
 				}
@@ -205,7 +201,10 @@ export default defineComponent({
 		}
 
 		const touchMoveHandler = (event) => {
-			//event.preventDefault();
+			if (!props.bottomClose) {
+				return;
+			}
+
 			if (0 !== scrollTop.value && 'swiper__modal' !== event.srcElement.className) {
 				return;
 			}
@@ -292,7 +291,10 @@ export default defineComponent({
 		}
 
 		const touchStartHandler = (event) => {
-			console.log(event);
+			if (!props.bottomClose) {
+				return;
+			}
+
 			if (0 !== scrollTop.value && 'swiper__modal' !== event.srcElement.className) {
 				return;
 			}
@@ -307,7 +309,6 @@ export default defineComponent({
 		}
 
 		const scrollHandler = (event) => {
-			//console.log(event.path)
 			scrollTop.value = swiperContainer.value.scrollTop;
 
 			if (0 == scrollTop.value && props.hookHeight !== translate.value) {
