@@ -5,7 +5,11 @@ import {LastPosition} from './last-position';
 
 export default defineComponent({
 	name: "Swiper",
-	setup(props: any) {
+	props: {
+		hookHeight: {type: Number, default: 25},
+	},
+	emits: ['close'],
+	setup(props: any, {emit}) {
 		const direction          = ref<string>(Direction.UP);
 		const beginPosition      = ref<Coordinates>(null);
 		const lastPosition       = ref<Coordinates>(null);
@@ -18,8 +22,13 @@ export default defineComponent({
 		const maxSize            = ref(0);
 		const contentSize        = ref(0);
 		const scrollTop          = ref(0);
+		const isOpacityVisible   = ref<boolean>(false);
 
 		onMounted(() => {
+			if (props.isShown == false) {
+				return;
+			}
+
 			document.body.style.overflow = 'hidden';
 
 			translateValue.value = 0;
@@ -27,8 +36,8 @@ export default defineComponent({
 			const contentHeight = modal.value.offsetHeight;
 			const clientHeight = document.documentElement.clientHeight;
 
-			if (contentHeight >= clientHeight - 75) {
-				maxSize.value = clientHeight - 75;
+			if (contentHeight >= clientHeight - (50 + props.hookHeight)) {
+				maxSize.value = clientHeight - (50 + props.hookHeight);
 				modal.value.style.height = `${maxSize.value}px`;
 				swiperContainer.value.style.height = `${maxSize.value}px`
 			}
@@ -37,11 +46,16 @@ export default defineComponent({
 			}
 
 			contentSize.value = contentHeight;
+
+			moveSlide(maxSize.value, maxSize.value, false, LastPosition.TOP)
+
+			setTimeout(() => {
+				isOpacityVisible.value = true;
+			}, 100)
 		});
 
 		const reset = (): void => {
 			beginPosition.value   = null;
-			lastPosition.value    = null;
 			currentPosition.value = null;
 			endPosition.value     = null;
 		}
@@ -56,6 +70,14 @@ export default defineComponent({
 			lastObjectPosition.value = LastPosition.BOTTOM;
 			translateValue.value     = 0;
 			reset();
+			closeBottomSheet();
+		}
+
+		const closeBottomSheet = () => {
+			isOpacityVisible.value = false;
+			setTimeout(() => {
+				emit('close');
+			}, 300)
 		}
 
 		const moveSlide = (cycleTime: number, finishTranslate: number, decrement: boolean, finishPosition: string): void => {
@@ -67,22 +89,26 @@ export default defineComponent({
 						lastObjectPosition.value = finishPosition;
 						translateValue.value = finishTranslate;
 						console.log('position', lastObjectPosition.value)
+						if (LastPosition.BOTTOM === finishPosition) {
+							closeBottomSheet()
+						}
 					}
 				}, i * 0.75);
 			}
 		}
 
 		const translate = computed<number>(() => {
-			if (25 <= maxSize.value - translateValue.value + 25) {
-				return maxSize.value - translateValue.value + 25;
+			if (props.hookHeight <= maxSize.value - translateValue.value + props.hookHeight) {
+				return maxSize.value - translateValue.value + props.hookHeight;
 			}
 
-			if (maxSize.value < maxSize.value - translateValue.value + 25) {
-				console.log(23232);
-				return maxSize.value;
-			}
-			return 25;
+			return props.hookHeight;
 		})
+
+		const overlayCloseHandler = () => {
+			moveSlide(maxSize.value, 0, true, LastPosition.BOTTOM);
+			closeBottomSheet();
+		}
 
 		const touchEndHandler = (event) => {
 			if (0 !== scrollTop.value) {
@@ -282,7 +308,7 @@ export default defineComponent({
 		const scrollHandler = (event) => {
 			scrollTop.value = swiperContainer.value.scrollTop;
 
-			if (0 == scrollTop.value && 25 !== translate.value) {
+			if (0 == scrollTop.value && props.hookHeight !== translate.value) {
 				event.preventDefault();
 			}
 		}
@@ -294,10 +320,12 @@ export default defineComponent({
 			contentSize,
 			swiperContainer,
 			translate,
+			isOpacityVisible,
 			touchStartHandler,
 			touchEndHandler,
 			touchMoveHandler,
 			scrollHandler,
+			overlayCloseHandler,
 		}
 	}
 });

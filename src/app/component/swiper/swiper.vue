@@ -4,20 +4,30 @@
 <template>
 	<div class="swiper">
 		<div
+			:class="[
+				'swiper__overlay',
+				{'swiper__overlay_visible': isOpacityVisible}
+			]"
+			@click="overlayCloseHandler"
+		></div>
+		<div
 			@touchstart="touchStartHandler"
 			@touchend="touchEndHandler"
 			@touchmove="touchMoveHandler"
-			:style="{height: `${maxSize + 25}px`}"
+			:style="{height: `${maxSize - hookHeight}px`}"
 			class="swiper__road">
 			<div
 				ref="modal"
-				:style="{transform: `translateY(${translate}px)`}"
+				:style="{
+					transform:     `translateY(${translate}px)`,
+					paddingTop: `${hookHeight}px`
+				}"
 				class="swiper__modal"
 			>
 				<div
 					:class="[
 						'swiper__container',
-						{'swiper__container_no-scroll': translate !== 25}
+						{'swiper__container_no-scroll': translate !== hookHeight}
 					]"
 					ref="swiperContainer"
 					@scroll="scrollHandler"
@@ -28,7 +38,10 @@
 					<div class="swiper__content">
 						<slot name="content"/>
 					</div>
-					<div class="swiper__footer">
+					<div
+						class="swiper__footer"
+						:style="{paddingBottom: `${hookHeight}px`}"
+					>
 						<slot name="footer"/>
 					</div>
 				</div>

@@ -7,7 +7,7 @@ export default defineComponent({
 		Swiper,
 	},
 	setup() {
-		const isVisibleCupertino = ref<boolean>(false);
+		const isVisible = ref<boolean>(false);
 
 		const breaks = {
 			top: {
@@ -17,13 +17,13 @@ export default defineComponent({
 			}
 		}
 
-		const clickHandlerBottomSheetCupertino = () => {
-			isVisibleCupertino.value = !isVisibleCupertino.value;
+		const clickHandlerBottomSheet = () => {
+			isVisible.value = !isVisible.value;
 		}
 
 		return {
-			clickHandlerBottomSheetCupertino,
-			isVisibleCupertino,
+			clickHandlerBottomSheet,
+			isVisible,
 			breaks
 		}
 	}

@@ -8,10 +8,23 @@
 	bottom:           0;
 	width:            100%;
 	height:           100vh;
-	background-color: darkgray;
 	overflow:         hidden;
 
+	&__overlay {
+		position: fixed;
+		width: 100%;
+		height: 100vh;
+		background-color: black;
+		opacity: 0;
+		transition: .3s;
+
+		&_visible {
+			opacity: 0.5;
+		}
+	}
+
 	&__road {
+		z-index: 10;
 		width:            100%;
 		background-color: transparent;
 		display:          flex;
@@ -24,20 +37,14 @@
 		padding-top:      25px;
 		width:            100%;
 		background-color: #c1f2ca;
-		//overflow: scroll;
 	}
 
 	&__container {
 		overflow:                   scroll;
 		overscroll-behavior:        none;
-		padding-bottom:             25px;
 
 		&_no-scroll {
 			overflow: hidden;
 		}
-	}
-
-	&__footer {
-		padding-bottom: 25px;
 	}
 }
