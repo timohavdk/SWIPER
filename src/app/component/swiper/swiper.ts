@@ -281,9 +281,9 @@ export default defineComponent({
 
 		const scrollHandler = (event) => {
 			scrollTop.value = swiperContainer.value.scrollTop;
-			if (0 == scrollTop.value) {
+
+			if (0 == scrollTop.value && 25 !== translate.value) {
 				event.preventDefault();
-				return;
 			}
 		}
 

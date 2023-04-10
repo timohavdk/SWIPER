@@ -15,7 +15,10 @@
 				class="swiper__modal"
 			>
 				<div
-					class="swiper__container"
+					:class="[
+						'swiper__container',
+						{'swiper__container_no-scroll': translate !== 25}
+					]"
 					ref="swiperContainer"
 					@scroll="scrollHandler"
 				>

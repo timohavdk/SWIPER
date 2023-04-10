@@ -30,8 +30,11 @@
 	&__container {
 		overflow:                   scroll;
 		overscroll-behavior:        none;
-		-webkit-overflow-scrolling: touch;
 		padding-bottom:             25px;
+
+		&_no-scroll {
+			overflow: hidden;
+		}
 	}
 
 	&__footer {
