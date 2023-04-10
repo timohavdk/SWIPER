@@ -111,7 +111,7 @@ export default defineComponent({
 		}
 
 		const touchEndHandler = (event) => {
-			if (0 !== scrollTop.value) {
+			if (0 !== scrollTop.value && 'swiper__modal' !== event.srcElement.className) {
 				return;
 			}
 
@@ -206,7 +206,7 @@ export default defineComponent({
 
 		const touchMoveHandler = (event) => {
 			//event.preventDefault();
-			if (0 !== scrollTop.value) {
+			if (0 !== scrollTop.value && 'swiper__modal' !== event.srcElement.className) {
 				return;
 			}
 
@@ -292,7 +292,8 @@ export default defineComponent({
 		}
 
 		const touchStartHandler = (event) => {
-			if (0 !== scrollTop.value) {
+			console.log(event);
+			if (0 !== scrollTop.value && 'swiper__modal' !== event.srcElement.className) {
 				return;
 			}
 
@@ -306,6 +307,7 @@ export default defineComponent({
 		}
 
 		const scrollHandler = (event) => {
+			//console.log(event.path)
 			scrollTop.value = swiperContainer.value.scrollTop;
 
 			if (0 == scrollTop.value && props.hookHeight !== translate.value) {
